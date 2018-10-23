@@ -8,7 +8,7 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { Image } from 'react-native';
+import { Image, TextInput, Alert, Button, ScrollView, FlatList } from 'react-native';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -47,18 +47,46 @@ class Blink extends Component {
 
 type Props = {};
 export default class App extends Component<Props> {
+  _onPressButton() {
+    Alert.alert('You tabed the button')
+  }
   render() {
     let pic = {
       uri: 'https://wx2.sinaimg.cn/mw690/5fe93731gy1fw98zcemqlj20ku0ku76e.jpg'
     };
     return (
       <View style={styles.container}>
-        <Blink text='bling bling' />
-        <Text style={styles.hello}>Hello World!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        <Image source={pic} style={{ width: 190, height: 200 }} />
-        <Greeting name='liuqiang' />
+        <Blink text='bling bling' style={styles.hello} />
+        <ScrollView style={{ marginBottom: 50 }}>
+          <Text style={styles.hello}>Hello World!</Text>
+          <Text style={styles.instructions}>To get started, edit App.js</Text>
+          <Text style={styles.instructions}>{instructions}</Text>
+          <Image source={pic} style={{ width: 190, height: 200 }} />
+          <FlatList
+            data={[
+              { key: 'java' },
+              { key: '计算机网络' },
+              { key: '数据机构和算法' },
+              { key: '数据库' },
+              { key: 'Android' },
+            ]}
+            renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
+          />
+          <Greeting name='liuqiang' />
+          <View style={{ height: 50, flexDirection: 'row' }}>
+            <View style={{ flex: 1, height: 50, backgroundColor: '#ff0000' }}></View>
+            <View style={{ flex: 2, height: 50, backgroundColor: '#00ff00' }}></View>
+          </View>
+          <TextInput
+            style={{ height: 40, width: 200, flexDirection: 'row' }}
+            placeholder='写点什么吧...'
+            onChangeText={Alert.alert("123")}
+          ></TextInput>
+          <Button
+            title='提交'
+            onPress={this._onPressButton}
+            style={{ marginBottom: 50, }} />
+        </ScrollView>
       </View>
     );
   }
@@ -68,6 +96,7 @@ const styles = StyleSheet.create({
   hello: {
     color: '#ff0000',
     fontWeight: 'bold',
+    textAlign: 'center',
     fontSize: 28,
   },
   container: {
@@ -84,6 +113,13 @@ const styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#333333',
+    marginBottom: 5,
+  },
+  item: {
+    textAlign: 'center',
+    color: '#333333',
+    padding: 10,
+    fontSize: 20,
     marginBottom: 5,
   },
 });
