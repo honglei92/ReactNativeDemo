@@ -8,7 +8,7 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { Image, TextInput, Alert, Button, ScrollView, FlatList } from 'react-native';
+import { Image, TextInput, Alert, Button, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -17,75 +17,56 @@ const instructions = Platform.select({
   'Shake or press menu button for dev menu',
 });
 
-class Greeting extends Component {
-  render() {
-    return (
-      <View style={{ alignItems: 'center' }}>
-        <Text>Hello {this.props.name}</Text>
-      </View>
-    );
-  }
-}
-
-class Blink extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { showText: true }
-    setInterval(() => {
-      this.setState(previousState => {
-        return { showText: !previousState.showText }
-      });
-    }, 1000)
-  }
-  render() {
-    let display = this.state.showText ? this.props.text : ' ';
-    return (
-      <Text>{display}</Text>
-    )
-  }
-}
-
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props) {
+    super(props)
+    this.state = { isLoading: true }
+  }
   _onPressButton() {
     Alert.alert('You tabed the button')
   }
+  componentDidMount() {
+    return fetch('http://api.douban.com/v2/movie/top250?start=0&count=250')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson.subjects,
+        }, function () {
+        });
+      }).catch((error) => {
+        console.error(error);
+      });
+  }
   render() {
-    let pic = {
-      uri: 'https://wx2.sinaimg.cn/mw690/5fe93731gy1fw98zcemqlj20ku0ku76e.jpg'
-    };
+    if (this.state.isLoading) {
+      return (
+        <View style={{ flex: 1, padding: 20 }}>
+          <ActivityIndicator />
+        </View>
+      )
+    }
     return (
-      <View style={styles.container}>
-        <Blink text='bling bling' style={styles.hello} />
-        <ScrollView style={{ marginBottom: 50 }}>
-          <Text style={styles.hello}>Hello World!</Text>
-          <Text style={styles.instructions}>To get started, edit App.js</Text>
-          <Text style={styles.instructions}>{instructions}</Text>
-          <Image source={pic} style={{ width: 190, height: 200 }} />
+      <View style={styles.container} >
+        <ScrollView contentContainerStyle={{ flex: 1 }} style={{ marginBottom: 50 }}>
           <FlatList
-            data={[
-              { key: 'java' },
-              { key: '计算机网络' },
-              { key: '数据机构和算法' },
-              { key: '数据库' },
-              { key: 'Android' },
-            ]}
-            renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
+            data={
+              this.state.dataSource}
+            renderItem={({ item }) =>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={{ uri: item.images.small }}
+                  style={styles.image}
+                />
+                <View style={{ flex: 2, flexDirection: 'column' }}>
+                  <Text style={styles.item}>{item.title},{item.year}</Text>
+                  <Text style={styles.item}>{item.original_title}</Text>
+                </View>
+              </View>}
+            keyExtractor={(item, index) => item.id}
           />
-          <Greeting name='liuqiang' />
-          <View style={{ height: 50, flexDirection: 'row' }}>
-            <View style={{ flex: 1, height: 50, backgroundColor: '#ff0000' }}></View>
-            <View style={{ flex: 2, height: 50, backgroundColor: '#00ff00' }}></View>
-          </View>
-          <TextInput
-            style={{ height: 40, width: 200, flexDirection: 'row' }}
-            placeholder='写点什么吧...'
-            onChangeText={Alert.alert("123")}
-          ></TextInput>
-          <Button
-            title='提交'
-            onPress={this._onPressButton}
-            style={{ marginBottom: 50, }} />
+          <Text style={styles.hello}>111111111111111111111111111111111111111111111111111111</Text>
         </ScrollView>
       </View>
     );
@@ -116,10 +97,18 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   item: {
+    flex: 2,
     textAlign: 'center',
     color: '#333333',
     padding: 10,
     fontSize: 20,
     marginBottom: 5,
   },
+  image: {
+    flex: 1,
+    width: 100,
+    height: 100,
+    margin:20,
+    padding: 10
+  }
 });
