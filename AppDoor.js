@@ -80,7 +80,7 @@ export default class App extends Component<Props> {
           <TextInput
             style={{ height: 40, width: 200, flexDirection: 'row' }}
             placeholder='写点什么吧...'
-            onChangeText={Alert.alert("123")}
+          /* onChangeText={Alert.alert("123")}*/
           ></TextInput>
           <Button
             title='提交'

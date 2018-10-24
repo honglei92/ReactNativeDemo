@@ -9,106 +9,85 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Image, TextInput, Alert, Button, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { TabNavigator, } from 'react-navigation'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-  'Double tap R on your keyboard to reload,\n' +
-  'Shake or press menu button for dev menu',
-});
+import AppMovie from './AppMovie';
+import AppDoor from './AppDoor';
+import AppDoor1 from './AppDoor1';
+import AppDoor2 from './AppDoor2';
 
-type Props = {};
-export default class App extends Component<Props> {
-  constructor(props) {
-    super(props)
-    this.state = { isLoading: true }
-  }
-  _onPressButton() {
-    Alert.alert('You tabed the button')
-  }
-  componentDidMount() {
-    return fetch('http://api.douban.com/v2/movie/top250?start=0&count=250')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson.subjects,
-        }, function () {
-        });
-      }).catch((error) => {
-        console.error(error);
-      });
-  }
-  render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={{ flex: 1, padding: 20 }}>
-          <ActivityIndicator />
-        </View>
-      )
-    }
-    return (
-      <View style={styles.container} >
-        <ScrollView contentContainerStyle={{ flex: 1 }} style={{ marginBottom: 50 }}>
-          <FlatList
-            data={
-              this.state.dataSource}
-            renderItem={({ item }) =>
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  source={{ uri: item.images.small }}
-                  style={styles.image}
-                />
-                <View style={{ flex: 2, flexDirection: 'column' }}>
-                  <Text style={styles.item}>{item.title},{item.year}</Text>
-                  <Text style={styles.item}>{item.original_title}</Text>
-                </View>
-              </View>}
-            keyExtractor={(item, index) => item.id}
-          />
-          <Text style={styles.hello}>111111111111111111111111111111111111111111111111111111</Text>
-        </ScrollView>
-      </View>
-    );
-  }
-}
+export default Tab = TabNavigator({
+  AppMovie: {
+    screen: AppMovie,
+    navigationOptions: {
+      tabBarLabel: '首页',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('./images/ic_main1.png')}
+          style={[{ height: 24, width: 24 }, { tintColor: tintColor }]} />
+      ),
+    },
+  },
+  AppDoor: {
+    screen: AppDoor,
+    navigationOptions: {
+      tabBarLabel: '分类',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('./images/ic_main2.png')}
+          style={[{ height: 24, width: 24 }, { tintColor: tintColor }]} />
+      ),
+    },
+  },
+  AppDoor1: {
+    screen: AppDoor1,
+    navigationOptions: {
+      tabBarLabel: '书架',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('./images/ic_main3.png')}
+          style={[{ height: 24, width: 24 }, { tintColor: tintColor }]} />
+      ),
+    },
+  },
+  AppDoor2: {
+    screen: AppDoor2,
+    navigationOptions: {
+      tabBarLabel: '我的',
+      tabBarIcon: ({ tintColor }) => (
+        <Image
+          source={require('./images/ic_main4.png')}
+          style={[{ height: 24, width: 24 }, { tintColor: tintColor }]} />
+      ),
+    },
+  },
+}, {
+    tabBarPosition: 'bottom',
+    animationEnabled: true,
+    swipeEnabled: true,
+    backBehavior: "none",
 
-const styles = StyleSheet.create({
-  hello: {
-    color: '#ff0000',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 28,
+    tabBarOptions: {
+      upperCaseLabel: false,
+      showIcon: true,
+      showLabel: true,
+      activeTintColor: '#eb3695',
+      inactiveTintColor: 'gray',
+      style: {
+        backgroundColor: 'white',
+        height: 55,
+      },
+      indicatorStyle: {
+        height: 0,
+      },
+      labelStyle: {
+        fontSize: 13,
+        marginTop: -5,
+        marginBottom: 5,
+      },
+      iconStyle: {
+        marginBottom: 5,
+      },
+    },
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  item: {
-    flex: 2,
-    textAlign: 'center',
-    color: '#333333',
-    padding: 10,
-    fontSize: 20,
-    marginBottom: 5,
-  },
-  image: {
-    flex: 1,
-    width: 100,
-    height: 100,
-    margin:20,
-    padding: 10
-  }
-});
+);
