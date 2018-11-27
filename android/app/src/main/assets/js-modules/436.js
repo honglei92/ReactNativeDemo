@@ -1,0 +1,1 @@
+__d(function(e,s,t,a,c){t.exports=s(c[0]).registerAsset({__packager_asset:!0,httpServerLocation:"/assets/images",width:68,height:88,scales:[1],hash:"8f732693f1dad9cdb45fe76dc55e678f",name:"ic_main4_selected",type:"png"})},436,[144]);

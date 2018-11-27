@@ -1,0 +1,1 @@
+__d(function(e,t,o,r,u){Object.defineProperty(r,"__esModule",{value:!0}),r.default=function(e,t){if(e.childRouters&&e.childRouters[t])return e.childRouters[t];return e.getComponentForRouteName(t).router}},316,[]);

@@ -11,10 +11,10 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Image, TextInput, Alert, Button, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 
-import AppMovie from './AppMovie';
-import AppDoor from './AppDoor';
-import AppDoor1 from './AppDoor1';
-import AppDoor2 from './AppDoor2';
+import AppMovie from './app/AppMovie';
+import AppDoor from './app/AppDoor';
+import AppDoor1 from './app/AppDoor1';
+import AppDoor2 from './app/AppDoor2';
 
 export default class Main extends Component<Props>{
   render() {

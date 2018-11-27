@@ -1,0 +1,1 @@
+__d(function(e,i,o,a,r){Object.defineProperty(a,"__esModule",{value:!0}),a.NavigationConsumer=a.NavigationProvider=void 0;var n=i(r[0]),t=(0,babelHelpers.interopRequireDefault(n).default)(),v=a.NavigationProvider=t.Provider,u=a.NavigationConsumer=t.Consumer;a.default={NavigationProvider:v,NavigationConsumer:u}},327,[328]);
